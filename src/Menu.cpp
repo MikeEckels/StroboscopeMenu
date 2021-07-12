@@ -10,23 +10,23 @@ Menu:: Menu() {
 	this->selectBtn = U8X8_PIN_NONE;
 	this->cancelBtn = U8X8_PIN_NONE;
 	this->isInverted = true;
-}
 
-Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned char leftBtn, const unsigned char rightBtn, const unsigned char selectBtn, const unsigned char cancelBtn, bool isInverted) 
-	: upBtn(upBtn), dwnBtn(dwnBtn), leftBtn(leftBtn), rightBtn(rightBtn), selectBtn(selectBtn), cancelBtn(cancelBtn), isInverted(isInverted) {}
-
-Menu::~Menu() = default;
-
-void Menu::Initialize() {
 	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
 	u8g2.setFlipMode(1);
 
-	list.AddIcon(&clock);
-	list.AddIcon(&gear);
-	list.AddIcon(&light);
-	list.AddIcon(&home);
-	list.AddIcon(&settings);
+	cursor.SetPosition(list.GetAt(0));
 }
+
+Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned char leftBtn, const unsigned char rightBtn, const unsigned char selectBtn, const unsigned char cancelBtn, bool isInverted) 
+	: upBtn(upBtn), dwnBtn(dwnBtn), leftBtn(leftBtn), rightBtn(rightBtn), selectBtn(selectBtn), cancelBtn(cancelBtn), isInverted(isInverted) {
+
+	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
+	u8g2.setFlipMode(1);
+
+	cursor.SetPosition(list.GetAt(0));
+}
+
+Menu::~Menu() = default;
 
 void Menu::FirstPage() {
 	u8g2.firstPage();
@@ -44,6 +44,37 @@ void Menu::DrawLayout() {
 	}
 }
 
+void Menu::ProcessMenuEvent() {
+	if (this->menuEvent == 0) {
+		this->menuEvent = u8g2.getMenuEvent();
+
+		switch (this->menuEvent) {
+		case U8X8_MSG_GPIO_MENU_UP:
+
+			break;
+		case  U8X8_MSG_GPIO_MENU_DOWN:
+
+			break;
+		case  U8X8_MSG_GPIO_MENU_NEXT:
+			cursor.NextPosition(&list);
+			break;
+		case  U8X8_MSG_GPIO_MENU_PREV:
+			cursor.PrevPosition(&list);
+			break;
+		case  U8X8_MSG_GPIO_MENU_SELECT:
+
+			break;
+		case  U8X8_MSG_GPIO_MENU_HOME:
+
+			break;
+		default:
+			
+			break;
+		}
+		this->menuEvent = 0;
+	}
+}
+
 void Menu::Draw() {
 	uint8_t i = 0;
 	
@@ -51,23 +82,11 @@ void Menu::Draw() {
 		if (Icon* currentIcon =list.GetAt(i)) {
 			u8g2.setFont(currentIcon->GetFont());
 			u8g2.drawGlyph(currentIcon->GetPosition().x, currentIcon->GetPosition().y, currentIcon->GetGlyphId());
-			DrawLayout();
+			//DrawLayout();
 			i++;
 		}
 	}
-	
-
-	static uint8_t j = 0;
-	j++;
-	if (j > 50) {
-		cursor.SetPosition(list.GetAt(0));
-		if (j > 100) {
-			cursor.NextPosition(&list);
-			if (j > 150) {
-				cursor.NextPosition(&list);
-				j = 0;
-			}
-		}
-	}
+	ProcessMenuEvent();
 	cursor.Render();
+	pageCursor.Render();
 }

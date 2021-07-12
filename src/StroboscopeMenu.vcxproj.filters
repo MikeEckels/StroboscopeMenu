@@ -33,13 +33,19 @@
     <ClInclude Include="Vector3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Cursor.h">
+    <ClInclude Include="Indexer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SubIcon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Indexer.h">
+    <ClInclude Include="PageCursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cursor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
