@@ -14,7 +14,7 @@ private:
 	Vector3D position = { 0, 0 };
 
 	void SetSpacing() {
-		static uint8_t pos = this->size.z;
+		static uint16_t pos = this->size.z;
 
 		this->position.x = pos;
 		this->position.y = ((0.5) * (u8g2->getDisplayHeight() + this->size.y));

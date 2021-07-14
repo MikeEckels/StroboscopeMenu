@@ -44,14 +44,12 @@ private:
 	Icon light = Icon(&u8g2, iconSize, 67, "Light", u8g2_font_open_iconic_embedded_4x_t);
 	Icon home = Icon(&u8g2, iconSize, 68, "Home", u8g2_font_open_iconic_embedded_4x_t);
 	Icon settings = Icon(&u8g2, iconSize, 72, "Settings", u8g2_font_open_iconic_embedded_4x_t);
-	//Icon clock2 = Icon(&u8g2, iconSize, 65, "Clock", u8g2_font_open_iconic_embedded_4x_t);
-	//Icon clock3 = Icon(&u8g2, iconSize, 65, "Clock", u8g2_font_open_iconic_embedded_4x_t);
 
 	Icon* icons[iconListSize] = {&clock, &gear, &light, &home, &settings};
 
 	IconList list = IconList(iconListSize, icons);
 	Cursor cursor = Cursor(&u8g2, iconSize, 3);
-	PageCursor pageCursor = PageCursor(&u8g2, &list, pageCursorSize, 1);
+	PageCursor pageCursor = PageCursor(&u8g2, &list, pageCursorSize, 1, 3);
 
 	void DrawLayout();
 	void ProcessMenuEvent();

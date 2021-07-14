@@ -10,12 +10,23 @@ private:
 	IconList* list = 0;
 	Indexer** cursors = 0;
 	uint8_t cursorCount = 0;
+	uint8_t padding = 0;
 
 	void SetSpacing() {
+		static uint8_t x;
+		Vector3D position;
+		uint8_t y = (uint8_t)(u8g2->getDisplayHeight() - (cursors[0]->GetSize().z + cursors[0]->GetStroke()));
+
+		if (this->cursorCount % 2) { //Odd
+			x = (uint8_t)(floor(-0.5 * this->cursorCount * this->padding - this->cursorCount * cursors[0]->GetSize().z + 0.5 * this->padding) + cursors[0]->GetSize().z + 0.5 * u8g2->getDisplayWidth());
+		}
+		else { //Even
+			x = (uint8_t)((0.5 * u8g2->getDisplayWidth()) - (floor(0.5 * (this->cursorCount - 1)) * (2 * cursors[0]->GetSize().z)) - (floor(0.5 * (this->cursorCount - 1)) * this->padding) - (0.5 * this->padding) - cursors[0]->GetSize().z);
+		}
+
 		for (uint8_t i = 0; i < this->cursorCount; i++) {
-			static uint8_t x = (uint8_t)(((u8g2->getDisplayWidth() / (uint8_t)2)) - (cursors[i]->GetSize().z + cursors[i]->GetStroke()));
-			x += ((2*i)*(cursors[i]->GetSize().z + cursors[i]->GetStroke()));
-			Vector3D position = { x, (uint8_t)(u8g2->getDisplayHeight() - (cursors[i]->GetSize().z + cursors[i]->GetStroke()))};
+			position = { x, y};
+			x += (this->padding + (2 * cursors[i]->GetSize().z));
 			cursors[i]->SetPosition(position);
 		}
 	}
@@ -27,7 +38,7 @@ private:
 	}
 
 public:
-	PageCursor(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, IconList* list, Vector3D size, uint8_t stroke) : Indexer{size, stroke }, u8g2(u8g2), list(list) {
+	PageCursor(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, IconList* list, Vector3D size, uint8_t stroke, uint8_t padding) : Indexer{size, stroke }, u8g2(u8g2), list(list), padding(padding) {
 		this->cursorCount = ceil((float)list->GetIconCount() / 3.0f);
 		this->cursors = new Indexer*[this->cursorCount];
 
