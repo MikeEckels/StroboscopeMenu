@@ -14,7 +14,7 @@ Menu:: Menu() {
 	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
 	u8g2.setFlipMode(1);
 
-	cursor.SetPosition(list.GetAt(0));
+	cursor.SetPositionIndex(list.GetAt(0));
 }
 
 Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned char leftBtn, const unsigned char rightBtn, const unsigned char selectBtn, const unsigned char cancelBtn, bool isInverted) 
@@ -23,7 +23,7 @@ Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned
 	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
 	u8g2.setFlipMode(1);
 
-	cursor.SetPosition(list.GetAt(0));
+	cursor.SetPositionIndex(list.GetAt(0));
 }
 
 Menu::~Menu() = default;
@@ -79,14 +79,17 @@ void Menu::Draw() {
 	uint8_t i = 0;
 	
 	while (i < list.GetIconCount()) {
-		if (Icon* currentIcon =list.GetAt(i)) {
+		if (Icon* currentIcon = list.GetAt(i)) {
 			u8g2.setFont(currentIcon->GetFont());
 			u8g2.drawGlyph(currentIcon->GetPosition().x, currentIcon->GetPosition().y, currentIcon->GetGlyphId());
+			u8g2.setFont(this->textFont);
+			u8g2.setCursor((u8g2.getDisplayWidth() - u8g2.getStrWidth(list.GetAt(cursor.GetPositionIndex())->GetName())) / 2, u8g2.getFontAscent() );
+			u8g2.print(list.GetAt(cursor.GetPositionIndex())->GetName());
 			//DrawLayout();
 			i++;
 		}
 	}
 	ProcessMenuEvent();
 	cursor.Render();
-	pageCursor.Render();
+	pageCursor.Render(&cursor);
 }

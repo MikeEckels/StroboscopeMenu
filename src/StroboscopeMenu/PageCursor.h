@@ -17,16 +17,16 @@ private:
 		Vector3D position;
 		uint8_t y = (uint8_t)(u8g2->getDisplayHeight() - (cursors[0]->GetSize().z + cursors[0]->GetStroke()));
 
-		if (this->cursorCount % 2) { //Odd
-			x = (uint8_t)(floor(-0.5 * this->cursorCount * this->padding - this->cursorCount * cursors[0]->GetSize().z + 0.5 * this->padding) + cursors[0]->GetSize().z + 0.5 * u8g2->getDisplayWidth());
+		if (this->cursorCount % 2) { //Odd number of cursors
+			x = (uint8_t)(floor(-0.5 * this->cursorCount * (this->padding + cursors[0]->GetStroke()) - this->cursorCount * cursors[0]->GetSize().z + 0.5 * (this->padding + cursors[0]->GetStroke())) + cursors[0]->GetSize().z + 0.5 * u8g2->getDisplayWidth());
 		}
-		else { //Even
-			x = (uint8_t)((0.5 * u8g2->getDisplayWidth()) - (floor(0.5 * (this->cursorCount - 1)) * (2 * cursors[0]->GetSize().z)) - (floor(0.5 * (this->cursorCount - 1)) * this->padding) - (0.5 * this->padding) - cursors[0]->GetSize().z);
+		else { //Even number of cursors
+			x = (uint8_t)((0.5 * u8g2->getDisplayWidth()) - (floor(0.5 * (this->cursorCount - 1)) * (2 * cursors[0]->GetSize().z)) - (floor(0.5 * (this->cursorCount - 1)) * (this->padding + cursors[0]->GetStroke())) - (0.5 * (this->padding + cursors[0]->GetStroke())) - cursors[0]->GetSize().z);
 		}
 
 		for (uint8_t i = 0; i < this->cursorCount; i++) {
 			position = { x, y};
-			x += (this->padding + (2 * cursors[i]->GetSize().z));
+			x += (this->padding + cursors[0]->GetStroke() + (2 * cursors[i]->GetSize().z));
 			cursors[i]->SetPosition(position);
 		}
 	}
@@ -54,35 +54,25 @@ public:
 		delete cursors;
 	}
 
-	/*void SetPosition() {
-		this->currentIndex = icon->GetIconId();
-		this->position.x = (((0.5) * icon->GetSize().x) + icon->GetPosition().x);
-		this->position.y = (icon->GetPosition().y - ((0.5) * (icon->GetSize().y)));
-	}
+	void Render(Cursor* cursor) {
+		uint8_t cursorIndex = cursor->GetPositionIndex();
+		static uint8_t oldIndex;
 
-	void NextPosition() {
-		uint8_t index = this->currentIndex;
-		index++;
-
-		if (index <= icons->GetIconCount() - 1 && index >= 0) {
-			SetPosition(icons->GetAt(index));
+		if ((cursorIndex != oldIndex)) {
+			this->currentIndex = floor(cursorIndex / 3);
 		}
-	}
 
-	void PrevPosition() {
-		uint8_t index = this->currentIndex;
-		index--;
-
-		if (index <= icons->GetIconCount() - 1 && index >= 0) {
-			SetPosition(icons->GetAt(index));
-		}
-	}*/
-
-	void Render() {
 		for (uint8_t i = 0; i < this->cursorCount; i++) {
 			for (uint8_t j = 0; j < this->stroke; j++) {
-				u8g2->drawCircle(cursors[i]->GetPosition().x, cursors[i]->GetPosition().y, cursors[i]->GetSize().z + j, U8G2_DRAW_ALL);
+				if (i == this->currentIndex) {
+					u8g2->drawDisc(cursors[i]->GetPosition().x, cursors[i]->GetPosition().y, cursors[i]->GetSize().z + j, U8G2_DRAW_ALL);
+				}
+				else {
+					u8g2->drawCircle(cursors[i]->GetPosition().x, cursors[i]->GetPosition().y, cursors[i]->GetSize().z + j, U8G2_DRAW_ALL);
+				}
 			}
 		}
+
+		oldIndex = cursorIndex;
 	}
 };

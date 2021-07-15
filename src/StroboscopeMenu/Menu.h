@@ -34,22 +34,38 @@ private:
 	unsigned char cancelBtn = U8X8_PIN_NONE;
 	bool isInverted = false;
 	int8_t menuEvent = 0;
+	
+	/*####################--CONFIGURATION PARAMETERS--####################*/
 
-	Vector3D iconSize = Vector3D(32, 32, 8); //X, Y, Padding
-	static const uint8_t iconListSize = 5;
-	Vector3D pageCursorSize = Vector3D(4, 4);
+	uint8_t numIconsPerPage = 3; //NEED TO UPDATE TO USE THIS WHEN AUTO SPACING
+	static const uint8_t numIcons = 3;
 
-	Icon clock = Icon(&u8g2, iconSize, 65, "Clock", u8g2_font_open_iconic_embedded_4x_t);
+	Vector3D iconSize = Vector3D(32, 32, 8);  //X, Y, Padding
+	Vector3D pageCursorSize = Vector3D(4, 4); //Radius calculated from square
+
+	uint8_t cursorStroke = 3;
+	uint8_t pageCursorStroke = 1;
+	uint8_t pageCursorPadding = 3;
+	const uint8_t* textFont = u8g2_font_helvB10_tr;
+	
+	//Icon definitions: Display, Size, GlyphID, Name, Font
+	
+	Icon strobe = Icon(&u8g2, iconSize, 67, "Strobe", u8g2_font_open_iconic_embedded_4x_t);
+	Icon settings = Icon(&u8g2, iconSize, 66, "Settings", u8g2_font_open_iconic_embedded_4x_t);
+	Icon flashLight = Icon(&u8g2, iconSize, 77, "Light", u8g2_font_open_iconic_embedded_4x_t);
+	/*Icon clock = Icon(&u8g2, iconSize, 65, "Clock", u8g2_font_open_iconic_embedded_4x_t);
 	Icon gear = Icon(&u8g2, iconSize, 66, "Gear", u8g2_font_open_iconic_embedded_4x_t);
 	Icon light = Icon(&u8g2, iconSize, 67, "Light", u8g2_font_open_iconic_embedded_4x_t);
 	Icon home = Icon(&u8g2, iconSize, 68, "Home", u8g2_font_open_iconic_embedded_4x_t);
-	Icon settings = Icon(&u8g2, iconSize, 72, "Settings", u8g2_font_open_iconic_embedded_4x_t);
+	Icon settings = Icon(&u8g2, iconSize, 72, "Settings", u8g2_font_open_iconic_embedded_4x_t);*/
 
-	Icon* icons[iconListSize] = {&clock, &gear, &light, &home, &settings};
+	Icon* icons[numIcons] = {&strobe, &settings, &flashLight};
 
-	IconList list = IconList(iconListSize, icons);
-	Cursor cursor = Cursor(&u8g2, iconSize, 3);
-	PageCursor pageCursor = PageCursor(&u8g2, &list, pageCursorSize, 1, 3);
+	/*####################################################################*/
+
+	IconList list = IconList(numIcons, icons);
+	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke);
+	PageCursor pageCursor = PageCursor(&u8g2, &list, pageCursorSize, pageCursorStroke, pageCursorPadding);
 
 	void DrawLayout();
 	void ProcessMenuEvent();
