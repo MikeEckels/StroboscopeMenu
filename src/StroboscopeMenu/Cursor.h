@@ -25,7 +25,7 @@ public:
 		index++;
 
 		if (index <= icons->GetIconCount() - 1 && index >= 0) {
-			SetPositionIndex(icons->GetAt(index));
+			Cursor::SetPositionIndex(icons->GetAt(index));
 		}
 	}
 
@@ -34,7 +34,7 @@ public:
 		index--;
 
 		if (index <= icons->GetIconCount() - 1 && index >= 0) {
-			SetPositionIndex(icons->GetAt(index));
+			Cursor::SetPositionIndex(icons->GetAt(index));
 		}
 	}
 

@@ -36,12 +36,29 @@ uint8_t Menu::NextPage() {
 	return u8g2.nextPage();
 }
 
+void Menu::DrawText() {
+	u8g2.setFont(this->textFont);
+	u8g2.setCursor((u8g2.getDisplayWidth() - u8g2.getStrWidth(list.GetAt(cursor.GetPositionIndex())->GetName())) / 2, u8g2.getFontAscent());
+	u8g2.print(list.GetAt(cursor.GetPositionIndex())->GetName());
+}
+
 void Menu::DrawLayout() {
 	for (uint8_t i = 0; i < 7; i++) {
 		for (uint8_t j = 0; j < 3; j++) {
 			u8g2.drawFrame(16 * i, 16 * j, 32, 32);;
 		}
 	}
+}
+
+void Menu::CheckPageChange() {
+	uint16_t xPos = cursor.GetPosition().x;
+	static uint16_t oldxPos;
+
+	if ((xPos != oldxPos) && (xPos >= u8g2.getDisplayWidth())) {
+		list.ShiftIconsRight(1);
+	}
+
+	oldxPos = xPos;
 }
 
 void Menu::ProcessMenuEvent() {
@@ -82,14 +99,14 @@ void Menu::Draw() {
 		if (Icon* currentIcon = list.GetAt(i)) {
 			u8g2.setFont(currentIcon->GetFont());
 			u8g2.drawGlyph(currentIcon->GetPosition().x, currentIcon->GetPosition().y, currentIcon->GetGlyphId());
-			u8g2.setFont(this->textFont);
-			u8g2.setCursor((u8g2.getDisplayWidth() - u8g2.getStrWidth(list.GetAt(cursor.GetPositionIndex())->GetName())) / 2, u8g2.getFontAscent() );
-			u8g2.print(list.GetAt(cursor.GetPositionIndex())->GetName());
-			//DrawLayout();
+			Menu::DrawText();
+			//Menu::DrawLayout();
 			i++;
 		}
 	}
-	ProcessMenuEvent();
+	Menu::ProcessMenuEvent();
+	Menu::CheckPageChange();
+
 	cursor.Render();
 	pageCursor.Render(&cursor);
 }

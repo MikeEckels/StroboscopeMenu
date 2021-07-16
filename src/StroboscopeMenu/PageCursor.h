@@ -46,11 +46,11 @@ public:
 			this->cursors[i] = new Indexer(size, stroke);
 		}
 
-		SetSpacing();
+		PageCursor::SetSpacing();
 	}
 
 	~PageCursor() {
-		ClearList();
+		PageCursor::ClearList();
 		delete cursors;
 	}
 
