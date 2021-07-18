@@ -24,6 +24,12 @@ public:
 		uint8_t index = this->currentIndex;
 		index++;
 
+		/*if (index > icons->GetIconCount() - 1) {
+			index = 0;
+		}
+
+		Cursor::SetPositionIndex(icons->GetAt(index));*/
+
 		if (index <= icons->GetIconCount() - 1 && index >= 0) {
 			Cursor::SetPositionIndex(icons->GetAt(index));
 		}
@@ -40,7 +46,7 @@ public:
 
 	void Render() {
 		for (uint8_t i = 0; i < this->stroke; i++) {
-			if (GetPosition().x == u8g2->getDisplayWidth() / 2) {
+			if (Indexer::GetPosition().x == u8g2->getDisplayWidth() / 2) {
 				u8g2->drawCircle(this->position.x, this->position.y, this->size.z + i, 12);
 			}
 			else {

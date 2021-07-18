@@ -13,8 +13,9 @@ private:
 	uint8_t padding = 0;
 
 	void SetSpacing() {
-		static uint8_t x;
 		Vector3D position;
+
+		static uint8_t x;
 		uint8_t y = (uint8_t)(u8g2->getDisplayHeight() - (cursors[0]->GetSize().z + cursors[0]->GetStroke()));
 
 		if (this->cursorCount % 2) { //Odd number of cursors
@@ -26,7 +27,7 @@ private:
 
 		for (uint8_t i = 0; i < this->cursorCount; i++) {
 			position = { x, y};
-			x += (this->padding + cursors[0]->GetStroke() + (2 * cursors[i]->GetSize().z));
+			x += (this->padding + cursors[i]->GetStroke() + (2 * cursors[i]->GetSize().z));
 			cursors[i]->SetPosition(position);
 		}
 	}
@@ -39,7 +40,7 @@ private:
 
 public:
 	PageCursor(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, IconList* list, Vector3D size, uint8_t stroke, uint8_t padding) : Indexer{size, stroke }, u8g2(u8g2), list(list), padding(padding) {
-		this->cursorCount = ceil((float)list->GetIconCount() / 3.0f);
+		this->cursorCount = ceil((float)list->GetIconCount() / list->GetIconsPerPage());
 		this->cursors = new Indexer*[this->cursorCount];
 
 		for (uint8_t i = 0; i < this->cursorCount; i++) {
@@ -55,11 +56,11 @@ public:
 	}
 
 	void Render(Cursor* cursor) {
-		uint8_t cursorIndex = cursor->GetPositionIndex();
 		static uint8_t oldIndex;
+		uint8_t cursorIndex = cursor->GetPositionIndex();
 
 		if ((cursorIndex != oldIndex)) {
-			this->currentIndex = floor(cursorIndex / 3);
+			this->currentIndex = floor(cursorIndex / this->list->GetIconsPerPage());
 		}
 
 		for (uint8_t i = 0; i < this->cursorCount; i++) {

@@ -3,7 +3,6 @@
 
 class Icon {
 private:
-	U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2 = 0;
 	Vector3D size = { 0, 0, 0 };
 	uint16_t glyphId = 0;
 	const char* name = 0;
@@ -13,26 +12,16 @@ private:
 	static int8_t currentIconId;
 	Vector3D position = { 0, 0 };
 
-	void SetSpacing() {
-		static uint16_t pos = this->size.z;
-
-		this->position.x = pos;
-		this->position.y = ((0.5) * (u8g2->getDisplayHeight() + this->size.y));
-		pos += this->size.x + this->size.z;
-	}
-
 public:
 	
-	Icon(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2) : u8g2(u8g2) {
-		this->iconId = ++currentIconId;
-		Icon::SetSpacing();		
+	Icon() {
+		this->iconId = ++currentIconId;		
 	}
 
-	Icon(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, Vector3D size, uint16_t glyphId, const char* name, const uint8_t* font) :
-		u8g2(u8g2), size(size), glyphId(glyphId),  name(name), font(font) {
+	Icon(Vector3D size, uint16_t glyphId, const char* name, const uint8_t* font) :
+		size(size), glyphId(glyphId),  name(name), font(font) {
 
 		this->iconId = ++currentIconId;
-		Icon::SetSpacing();
 	}
 
 	~Icon() {

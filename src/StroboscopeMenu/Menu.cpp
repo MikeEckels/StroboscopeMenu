@@ -51,14 +51,19 @@ void Menu::DrawLayout() {
 }
 
 void Menu::CheckPageChange() {
-	uint16_t xPos = cursor.GetPosition().x;
-	static uint16_t oldxPos;
+	static uint8_t oldIndex;
+	uint8_t currentIndex = cursor.GetPositionIndex();
 
-	if ((xPos != oldxPos) && (xPos >= u8g2.getDisplayWidth())) {
-		list.ShiftIconsRight(1);
+	if ((currentIndex > oldIndex) && !(currentIndex % this->numIconsPerPage) && (currentIndex != 0)) {
+		list.ShiftIconsRight(this->numIconsPerPage);
+		cursor.SetPositionIndex(list.GetAt(currentIndex));
+	}
+	else if ((currentIndex < oldIndex) && !(currentIndex % this->numIconsPerPage) && (currentIndex != 0)) {
+		list.ShiftIconsLeft(this->numIconsPerPage);
+		cursor.SetPositionIndex(list.GetAt(currentIndex - (this->numIconsPerPage - 1)));
 	}
 
-	oldxPos = xPos;
+	oldIndex = currentIndex;
 }
 
 void Menu::ProcessMenuEvent() {
