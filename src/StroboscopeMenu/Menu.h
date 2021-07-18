@@ -43,6 +43,7 @@ private:
 	Vector3D iconSize = Vector3D(32, 32);
 	Vector3D pageCursorSize = Vector3D(4, 4); //Radius calculated from square
 
+	Style cursorStyle = TOP_CENTER_CUTOUT;
 	uint8_t cursorStroke = 3;
 	uint8_t pageCursorStroke = 1;
 	uint8_t pageCursorPadding = 3;
@@ -55,18 +56,18 @@ private:
 	Icon flashLight = Icon(iconSize, 77, "Light", u8g2_font_open_iconic_embedded_4x_t);
 
 	Icon clock = Icon(iconSize, 65, "Clock", u8g2_font_open_iconic_embedded_4x_t);
-	Icon gear = Icon(iconSize, 66, "Gear", u8g2_font_open_iconic_embedded_4x_t);
-	Icon light = Icon(iconSize, 67, "Light", u8g2_font_open_iconic_embedded_4x_t);
+	Icon pencil = Icon(iconSize, 69, "Pencil", u8g2_font_open_iconic_embedded_4x_t);
+	Icon beat = Icon(iconSize, 70, "Beat", u8g2_font_open_iconic_embedded_4x_t);
 	Icon home = Icon(iconSize, 68, "Home", u8g2_font_open_iconic_embedded_4x_t);
-	Icon settings2 = Icon(iconSize, 72, "Settings", u8g2_font_open_iconic_embedded_4x_t);
+	Icon wrench = Icon(iconSize, 72, "Wrench", u8g2_font_open_iconic_embedded_4x_t);
 
 	//Icon* icons[numIcons] = {&strobe, &settings, &flashLight};
-	Icon* icons[numIcons] = { &strobe, &settings, &flashLight, &clock, &gear, &light, &home, &settings2 };
+	Icon* icons[numIcons] = { &strobe, &settings, &flashLight, &clock, &pencil, &beat, &home, &wrench };
 
 	/*####################################################################*/
 
 	IconList list = IconList(&u8g2, numIcons, numIconsPerPage, icons);
-	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke);
+	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke, cursorStyle);
 	PageCursor pageCursor = PageCursor(&u8g2, &list, pageCursorSize, pageCursorStroke, pageCursorPadding);
 
 	void DrawText();
