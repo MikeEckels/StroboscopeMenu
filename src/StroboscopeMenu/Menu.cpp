@@ -58,9 +58,9 @@ void Menu::CheckPageChange() {
 		list.ShiftIconsRight(this->numIconsPerPage);
 		cursor.SetPositionIndex(list.GetAt(currentIndex));
 	}
-	else if ((currentIndex < oldIndex) && !(currentIndex % this->numIconsPerPage) && (currentIndex != 0)) {
+	else if ((currentIndex < oldIndex) && !(oldIndex % this->numIconsPerPage) && (currentIndex != 0)) {
 		list.ShiftIconsLeft(this->numIconsPerPage);
-		cursor.SetPositionIndex(list.GetAt(currentIndex - (this->numIconsPerPage - 1)));
+		cursor.SetPositionIndex(list.GetAt(currentIndex));
 	}
 
 	oldIndex = currentIndex;
