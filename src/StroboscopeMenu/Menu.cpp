@@ -54,11 +54,13 @@ void Menu::CheckPageChange() {
 	static uint8_t oldIndex;
 	uint8_t currentIndex = cursor.GetPositionIndex();
 
-	if ((currentIndex > oldIndex) && !(currentIndex % this->numIconsPerPage) && (currentIndex != 0)) {
+	if ((currentIndex > oldIndex) && !(currentIndex % this->numIconsPerPage) /* && (currentIndex != 0)*/) {
+		DEBUG_PRINTLN("RIGHT");
 		list.ShiftIconsRight(this->numIconsPerPage);
 		cursor.SetPositionIndex(list.GetAt(currentIndex));
 	}
-	else if ((currentIndex < oldIndex) && !(oldIndex % this->numIconsPerPage) && (currentIndex != 0)) {
+	else if ((currentIndex < oldIndex) && !(oldIndex % this->numIconsPerPage)  /* && (currentIndex != 0)*/) {
+		DEBUG_PRINTLN("LEFT");
 		list.ShiftIconsLeft(this->numIconsPerPage);
 		cursor.SetPositionIndex(list.GetAt(currentIndex));
 	}
