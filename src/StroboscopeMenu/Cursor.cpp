@@ -16,37 +16,38 @@ void Cursor::NextPosition(IconList* icons) {
 	uint8_t index = this->currentIndex;
 	index++;
 
-	if (index > icons->GetIconCount() - 1) {
+	/*if (index > icons->GetIconCount() - 1) {
 		index = 0;
-	}
-
-	Cursor::SetPositionIndex(icons->GetAt(index));
-
-	/*if (index <= icons->GetIconCount() - 1 && index >= 0) {
-		Cursor::SetPositionIndex(icons->GetAt(index));
-	}*/
-}
-
-void Cursor::PrevPosition(IconList* icons) {
-	uint8_t index = this->currentIndex;
-	/*if (index > 0) {
-		index--;
-	}*/
-
-	/*if (index <= icons->GetIconCount() - 1) {
-		index = icons->GetIconCount() - 1;
 	}
 
 	Cursor::SetPositionIndex(icons->GetAt(index));*/
 
-	if (index <= 0) {
+	if (index <= icons->GetIconCount() - 1 && index >= 0) {
+		Cursor::SetPositionIndex(icons->GetAt(index));
+	}
+}
+
+void Cursor::PrevPosition(IconList* icons) {
+	uint8_t index = this->currentIndex;
+	index--;
+	/*if (index > 0) {
+		index--;
+	}*/
+
+	if (index <= icons->GetIconCount() - 1) {
+		index = icons->GetIconCount() - 1;
+	}
+
+	Cursor::SetPositionIndex(icons->GetAt(index));
+
+	/*if (index <= 0) {
 		index = icons->GetIconCount() - 1;
 	}
 	else {
 		index--;
 	}
 
-	Cursor::SetPositionIndex(icons->GetAt(index));
+	Cursor::SetPositionIndex(icons->GetAt(index));*/
 }
 
 void Cursor::Render() {
