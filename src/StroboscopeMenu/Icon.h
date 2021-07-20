@@ -16,7 +16,6 @@ private:
 	Vector3D position = { 0, 0 };
 
 public:
-	
 	Icon();
 	Icon(Vector3D size, uint16_t glyphId, const char* name, const uint8_t* font);
 	~Icon();

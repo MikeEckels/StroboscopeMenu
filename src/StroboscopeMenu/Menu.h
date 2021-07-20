@@ -2,9 +2,8 @@
 #define MENU_H
 
 #include <stdint.h>
-#include "Arduino.h"
-
 #include <U8g2lib.h>
+#include "Arduino.h"
 
 #ifdef U8X8_HAVE_HW_SPI
 #include <SPI.h>
@@ -22,7 +21,6 @@
 
 class Menu {
 private:
-
 	Menu(const Menu&) = delete;
 	Menu& operator = (const Menu&) = delete;
 
