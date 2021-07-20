@@ -1,4 +1,7 @@
-#pragma once
+#ifndef ICON_H
+#define ICON_H
+
+#include <stdint.h>
 #include "Vector3D.h"
 
 class Icon {
@@ -14,45 +17,18 @@ private:
 
 public:
 	
-	Icon() {
-		this->iconId = ++currentIconId;		
-	}
+	Icon();
+	Icon(Vector3D size, uint16_t glyphId, const char* name, const uint8_t* font);
+	~Icon();
 
-	Icon(Vector3D size, uint16_t glyphId, const char* name, const uint8_t* font) :
-		size(size), glyphId(glyphId),  name(name), font(font) {
+	Vector3D GetSize();
+	Vector3D GetPosition();
+	uint16_t GetGlyphId();
+	uint8_t GetIconId();
+	const char* GetName();
+	const uint8_t* GetFont();
 
-		this->iconId = ++currentIconId;
-	}
-
-	~Icon() {
-		--currentIconId;
-	}
-
-	Vector3D GetSize() {
-		return this->size;
-	}
-
-	Vector3D GetPosition()  {
-		return this->position;
-	}
-
-	uint16_t GetGlyphId() {
-		return this->glyphId;
-	}
-
-	uint8_t GetIconId() {
-		return this->iconId;
-	}
-
-	const char* GetName() {
-		return this->name;
-	}
-
-	const uint8_t* GetFont() {
-		return this->font;
-	}
-
-	void SetPosition(Vector3D position) {
-		this->position = position;
-	}
+	void SetPosition(Vector3D position);
 };
+
+#endif //ICON_H

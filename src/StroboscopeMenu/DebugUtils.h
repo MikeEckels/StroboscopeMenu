@@ -1,5 +1,10 @@
 #define DEBUG
 
+#ifndef DEBUG_H
+#define DEBUG_H
+
+#include "Arduino.h"
+
 #ifdef DEBUG
 #define DEBUG_PRINT(...) Serial.print(__VA_ARGS__)
 #define DEBUG_PRINTLN(...) Serial.println(__VA_ARGS__)
@@ -30,4 +35,5 @@
 #define DEBUG_PRINT_NOTICE(...)
 #define DEBUG_PRINT_FULL(...)
 #define DEBUG_PRINT_FULLLN(...)
-#endif
+#endif //DEBUG
+#endif //DEBUG_H

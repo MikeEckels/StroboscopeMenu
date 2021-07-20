@@ -1,5 +1,9 @@
-#pragma once
-#include "Icon.h"
+#ifndef ICON_LIST_H
+#define ICON_LIST_H
+
+#include <stdint.h>
+
+#include "Vector3D.h"
 #include "DebugUtils.h"
 
 class IconList {
@@ -80,3 +84,5 @@ public:
 		}
 	}
 };
+
+#endif //ICON_LIST_H

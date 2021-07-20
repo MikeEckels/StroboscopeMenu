@@ -1,7 +1,10 @@
-#pragma once
+#ifndef PAGE_CURSOR_H
+#define PAGE_CURSOR_H
+
+#include <stdint.h>
+
 #include "Indexer.h"
 #include "Vector3D.h"
-#include <math.h>
 #include "DebugUtils.h"
 
 class PageCursor : public Indexer {
@@ -77,3 +80,5 @@ public:
 		oldIndex = cursorIndex;
 	}
 };
+
+#endif //PAGE_CURSOR_H

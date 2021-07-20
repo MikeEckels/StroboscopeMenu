@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MENU_H
+#define MENU_H
+
 #include <stdint.h>
 #include "Arduino.h"
 
@@ -84,3 +86,5 @@ public:
 	uint8_t NextPage();
 	void Draw();
 };
+
+#endif //MENU_H

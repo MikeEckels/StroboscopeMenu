@@ -1,4 +1,8 @@
-#pragma once
+#ifndef CURSOR_H
+#define CURSOR_H
+
+#include <stdint.h>
+
 #include "Indexer.h"
 #include "Vector3D.h"
 #include "DebugUtils.h"
@@ -103,3 +107,5 @@ public:
 		}
 	}
 };
+
+#endif //CURSOR_H

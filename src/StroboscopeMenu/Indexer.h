@@ -1,7 +1,10 @@
-#pragma once
+#ifndef INDEXER_H
+#define INDEXER_H
+
 #include <Math.h>
+#include <stdint.h>
+
 #include "Vector3D.h"
-#include "IconList.h"
 
 class Indexer {
 protected:
@@ -49,3 +52,5 @@ public:
 		this->position = position;
 	}
 };
+
+#endif //INDEXER_H
