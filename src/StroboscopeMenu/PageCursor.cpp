@@ -43,16 +43,22 @@ void PageCursor::ClearList() {
 }
 
 void PageCursor::Render(Cursor* cursor) {
-	static uint8_t oldIndex;
+	//static uint8_t oldIndex;
 	uint8_t cursorIndex = cursor->GetPositionIndex();
+	uint8_t previousCursorIndex = cursor->GetPreviousPositionIndex();
 
-	if ((cursorIndex != oldIndex)) {
+	//DEBUG_PRINT_NOTICE(cursorIndex);
+	//DEBUG_PRINT_NOTICE(previousCursorIndex);
+
+	if ((cursorIndex != previousCursorIndex)) {
+		//DEBUG_PRINTLN("RAN");
 		this->currentIndex = floor(cursorIndex / this->list->GetIconsPerPage());
 	}
 
 	for (uint8_t i = 0; i < this->cursorCount; i++) {
 		for (uint8_t j = 0; j < this->stroke; j++) {
 			if (i == this->currentIndex) {
+				this->previousIndex = this->currentIndex;
 				u8g2->drawDisc(cursors[i]->GetPosition().x, cursors[i]->GetPosition().y, cursors[i]->GetSize().z + j, U8G2_DRAW_ALL);
 			}
 			else {
@@ -61,5 +67,5 @@ void PageCursor::Render(Cursor* cursor) {
 		}
 	}
 
-	oldIndex = cursorIndex;
+	//oldIndex = cursorIndex;
 }

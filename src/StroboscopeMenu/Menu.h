@@ -35,22 +35,21 @@ private:
 	bool isInverted = false;
 	int8_t menuEvent = 0;
 	
-	/*####################--CONFIGURATION PARAMETERS--####################*/
+	/*################################################--CONFIGURATION PARAMETERS--################################################*/
 
 	uint8_t numIconsPerPage = 3;
-	static const uint8_t numIcons = 8;
+	static const uint8_t numIcons = 9; //Must be evenly divisible by 'numIconsPerPage'. add "blank" icons as needed as shown below
 
 	Vector3D iconSize = Vector3D(32, 32);
 	Vector3D pageCursorSize = Vector3D(4, 4); //Radius calculated from square
 
-	Style cursorStyle = TOP_CENTER_CUTOUT;
+	Style cursorStyle = TOP_CUTOUT;
 	uint8_t cursorStroke = 3;
 	uint8_t pageCursorStroke = 1;
 	uint8_t pageCursorPadding = 3;
 	const uint8_t* textFont = u8g2_font_helvB10_tr;
 	
 	//Icon definitions: Display, Size, GlyphID, Name, Font
-	
 	Icon strobe = Icon(iconSize, 67, "Strobe", u8g2_font_open_iconic_embedded_4x_t);
 	Icon settings = Icon(iconSize, 66, "Settings", u8g2_font_open_iconic_embedded_4x_t);
 	Icon flashLight = Icon(iconSize, 77, "Light", u8g2_font_open_iconic_embedded_4x_t);
@@ -60,11 +59,11 @@ private:
 	Icon beat = Icon(iconSize, 70, "Beat", u8g2_font_open_iconic_embedded_4x_t);
 	Icon home = Icon(iconSize, 68, "Home", u8g2_font_open_iconic_embedded_4x_t);
 	Icon wrench = Icon(iconSize, 72, "Wrench", u8g2_font_open_iconic_embedded_4x_t);
+	Icon blank = Icon(iconSize, 0, NULL, NULL);
 
-	//Icon* icons[numIcons] = {&strobe, &settings, &flashLight};
-	Icon* icons[numIcons] = { &strobe, &settings, &flashLight, &clock, &pencil, &beat, &home, &wrench };
+	Icon* icons[numIcons] = { &strobe, &settings, &flashLight, &clock, &pencil, &beat, &home, &wrench, &blank };
 
-	/*####################################################################*/
+	/*############################################################################################################################*/
 
 	IconList list = IconList(&u8g2, numIcons, numIconsPerPage, icons);
 	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke, cursorStyle);

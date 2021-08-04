@@ -13,6 +13,7 @@ protected:
 
 	Vector3D position = { 0, 0 };
 	uint8_t currentIndex = 0;
+	uint8_t previousIndex = 0;
 
 public:
 	Indexer();
@@ -23,6 +24,7 @@ public:
 	uint8_t GetStroke();
 	Vector3D GetPosition();
 	uint8_t GetPositionIndex();
+	uint8_t GetPreviousPositionIndex();
 
 	void SetSize(Vector3D size);
 	void SetStroke(uint8_t stroke);

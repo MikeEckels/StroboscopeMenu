@@ -15,6 +15,7 @@ void IconList::SetIconSpacing() {
 
 	for (uint8_t i = 0; i < this->size; i++) {
 		position = { x, y, z };
+		
 		x += position.z + icons[i]->GetSize().x;
 		icons[i]->SetPosition(position);
 	}
@@ -50,7 +51,7 @@ uint8_t IconList::GetIconsPerPage() {
 
 Icon* IconList::GetAt(uint8_t index) {
 
-	if (index <= this->size && index >= 0) {
+	if (index <= this->size - 1 && index >= 0) {
 		return this->icons[index];
 	}
 	else {

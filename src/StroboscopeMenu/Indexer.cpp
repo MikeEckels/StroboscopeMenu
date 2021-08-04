@@ -24,6 +24,10 @@ uint8_t Indexer::GetPositionIndex() {
 	return this->currentIndex;
 }
 
+uint8_t Indexer::GetPreviousPositionIndex() {
+	return this->previousIndex;
+}
+
 void Indexer::SetSize(Vector3D size) {
 	this->size = size;
 }

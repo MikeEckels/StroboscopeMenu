@@ -10,6 +10,7 @@
 #include "Vector3D.h"
 #include "DebugUtils.h"
 
+//ROTATING_CUTOUT and TOP_CENTER_CUTOUT only work properly with an odd 'numIconsPerPage'
 enum Style { ROTATING_CUTOUT, TOP_CENTER_CUTOUT, TOP_CUTOUT, FULL_CIRCLE, FULL_SQUARE };
 
 class Cursor : public Indexer {

@@ -37,9 +37,13 @@ uint8_t Menu::NextPage() {
 }
 
 void Menu::DrawText() {
-	u8g2.setFont(this->textFont);
-	u8g2.setCursor((u8g2.getDisplayWidth() - u8g2.getStrWidth(list.GetAt(cursor.GetPositionIndex())->GetName())) / 2, u8g2.getFontAscent());
-	u8g2.print(list.GetAt(cursor.GetPositionIndex())->GetName());
+	Icon* currentIcon = list.GetAt(cursor.GetPositionIndex());
+
+	if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
+		u8g2.setFont(this->textFont);
+		u8g2.setCursor((u8g2.getDisplayWidth() - u8g2.getStrWidth(currentIcon->GetName())) / 2, u8g2.getFontAscent());
+		u8g2.print(currentIcon->GetName());
+	}
 }
 
 void Menu::DrawLayout() {
@@ -50,24 +54,23 @@ void Menu::DrawLayout() {
 	}
 }
 
-void Menu::CheckPageChange() {
-	static uint8_t oldCIndex;
-	uint8_t currentCIndex = cursor.GetPositionIndex();
-	uint8_t currentPcIndex = pageCursor.GetPositionIndex();
-
-	if ((currentCIndex > oldCIndex) && !(currentCIndex % this->numIconsPerPage)  && (currentCIndex != 0)) {
-		DEBUG_PRINTLN("RIGHT");
-		list.ShiftIconsRight(this->numIconsPerPage);
-		cursor.SetPositionIndex(list.GetAt(currentCIndex));
-	}
-	else if ((currentCIndex < oldCIndex) && !(oldCIndex % this->numIconsPerPage)   && (currentCIndex != 0)) {
-		DEBUG_PRINTLN("LEFT");
-		list.ShiftIconsLeft(this->numIconsPerPage);
-		cursor.SetPositionIndex(list.GetAt(currentCIndex));
-	}
-
-	oldCIndex = currentCIndex;
-}
+//void Menu::CheckPageChange() {
+//	uint8_t currentCIndex = cursor.GetPositionIndex();
+//	uint8_t previousCIndex = cursor.GetPreviousPositionIndex();
+//	DEBUG_PRINT_ERR(currentCIndex);
+//	DEBUG_PRINT_ERR(previousCIndex);
+//
+//	if ((currentCIndex > previousCIndex) && !(currentCIndex % this->numIconsPerPage)  && (currentCIndex != 0)) {
+//		DEBUG_PRINTLN("RIGHT");
+//		list.ShiftIconsRight(this->numIconsPerPage);
+//		//cursor.SetPositionIndex(list.GetAt(currentCIndex));
+//	}
+//	else if ((currentCIndex < previousCIndex) && !(previousCIndex % this->numIconsPerPage)   && (currentCIndex != 0)) {
+//		DEBUG_PRINTLN("LEFT");
+//		list.ShiftIconsLeft(this->numIconsPerPage);
+//		//cursor.SetPositionIndex(list.GetAt(currentCIndex));
+//	}
+//}
 
 void Menu::ProcessMenuEvent() {
 	if (this->menuEvent == 0) {
@@ -104,16 +107,18 @@ void Menu::Draw() {
 	uint8_t i = 0;
 	
 	while (i < list.GetIconCount()) {
-		if (Icon* currentIcon = list.GetAt(i)) {
+		Icon* currentIcon = list.GetAt(i);
+
+		if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
 			u8g2.setFont(currentIcon->GetFont());
 			u8g2.drawGlyph(currentIcon->GetPosition().x, currentIcon->GetPosition().y, currentIcon->GetGlyphId());
 			Menu::DrawText();
 			//Menu::DrawLayout();
-			i++;
 		}
+		i++;
 	}
 	Menu::ProcessMenuEvent();
-	Menu::CheckPageChange();
+	//Menu::CheckPageChange();
 
 	cursor.Render();
 	pageCursor.Render(&cursor);
