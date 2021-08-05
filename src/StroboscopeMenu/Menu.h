@@ -14,6 +14,7 @@
 
 #include "Icon.h"
 #include "IconList.h"
+#include "SubIconList.h"
 #include "Vector3D.h"
 #include "Cursor.h"
 #include "PageCursor.h"
@@ -38,7 +39,9 @@ private:
 	/*################################################--CONFIGURATION PARAMETERS--################################################*/
 
 	uint8_t numIconsPerPage = 3;
+	uint8_t numSubIconsPerPage = 1;
 	static const uint8_t numIcons = 9; //Must be evenly divisible by 'numIconsPerPage'. add "blank" icons as needed as shown below
+	static const uint8_t numSettingsSubIcons = 3;
 
 	Vector3D iconSize = Vector3D(32, 32);
 	Vector3D pageCursorSize = Vector3D(4, 4); //Radius calculated from square
@@ -61,13 +64,20 @@ private:
 	Icon wrench = Icon(iconSize, 72, "Wrench", u8g2_font_open_iconic_embedded_4x_t);
 	Icon blank = Icon(iconSize, 0, NULL, NULL);
 
-	Icon* icons[numIcons] = { &settings, &strobe, &flashLight, &clock, &pencil, &beat, &home, &wrench, &blank };
+	Icon subExternalTrigger = Icon(iconSize, 64, "External Trigger", u8g2_font_open_iconic_gui_4x_t);
+	Icon subFreqControl = Icon(iconSize, 70, "Frequency Control", u8g2_font_open_iconic_embedded_4x_t);
+	Icon subRPMControl = Icon(iconSize, 79, "RPM Control", u8g2_font_open_iconic_embedded_4x_t);
 
-	/*############################################################################################################################*/
+	Icon* icons[numIcons] = { &settings, &strobe, &flashLight, &clock, &pencil, &beat, &home, &wrench, &blank };
+	Icon* settingsSubIcons[numSettingsSubIcons] = { &subExternalTrigger, &subFreqControl, &subRPMControl };
 
 	IconList mainIconList = IconList(&u8g2, numIcons, numIconsPerPage, icons);
+	SubIconList settingsSubIconList = SubIconList(&u8g2, numSettingsSubIcons, numSubIconsPerPage, settingsSubIcons);
 	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke, cursorStyle);
 	PageCursor mainPageCursor = PageCursor(&u8g2, &mainIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
+	PageCursor settingsSubPageCursor = PageCursor(&u8g2, &settingsSubIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
+
+	/*############################################################################################################################*/
 
 	void DrawText();
 	void DrawLayout();
