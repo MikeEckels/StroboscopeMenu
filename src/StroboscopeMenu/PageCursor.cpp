@@ -1,8 +1,8 @@
 #include "PageCursor.h"
 
-PageCursor::PageCursor(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, IconList* list, Vector3D size, uint8_t stroke, uint8_t padding) : Indexer{ size, stroke }, u8g2(u8g2), list(list), padding(padding) {
+PageCursor::PageCursor(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, List* list, Vector3D size, uint8_t stroke, uint8_t padding) : Indexer{ size, stroke }, u8g2(u8g2), list(list), padding(padding) {
 	this->cursorCount = ceil((float)list->GetIconCount() / list->GetIconsPerPage());
-	this->cursors = new Indexer * [this->cursorCount];
+	this->cursors = new Indexer* [this->cursorCount];
 
 	for (uint8_t i = 0; i < this->cursorCount; i++) {
 		this->cursors[i] = new Indexer(size, stroke);
@@ -42,16 +42,11 @@ void PageCursor::ClearList() {
 	}
 }
 
-void PageCursor::Render(Cursor* cursor) {
-	//static uint8_t oldIndex;
+void PageCursor::Render(Indexer* cursor) {
 	uint8_t cursorIndex = cursor->GetPositionIndex();
 	uint8_t previousCursorIndex = cursor->GetPreviousPositionIndex();
 
-	//DEBUG_PRINT_NOTICE(cursorIndex);
-	//DEBUG_PRINT_NOTICE(previousCursorIndex);
-
 	if ((cursorIndex != previousCursorIndex)) {
-		//DEBUG_PRINTLN("RAN");
 		this->currentIndex = floor(cursorIndex / this->list->GetIconsPerPage());
 	}
 
@@ -66,6 +61,4 @@ void PageCursor::Render(Cursor* cursor) {
 			}
 		}
 	}
-
-	//oldIndex = cursorIndex;
 }

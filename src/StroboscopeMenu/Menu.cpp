@@ -14,7 +14,7 @@ Menu:: Menu() {
 	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
 	u8g2.setFlipMode(1);
 
-	cursor.SetPositionIndex(superIconList.GetAt(0));
+	cursor.SetPositionIndex(mainIconList.GetAt(0));
 }
 
 Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned char leftBtn, const unsigned char rightBtn, const unsigned char selectBtn, const unsigned char cancelBtn, bool isInverted) 
@@ -23,7 +23,7 @@ Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned
 	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
 	u8g2.setFlipMode(1);
 
-	cursor.SetPositionIndex(superIconList.GetAt(0));
+	cursor.SetPositionIndex(mainIconList.GetAt(0));
 }
 
 Menu::~Menu() = default;
@@ -37,7 +37,7 @@ uint8_t Menu::NextPage() {
 }
 
 void Menu::DrawText() {
-	Icon* currentIcon = superIconList.GetAt(cursor.GetPositionIndex());
+	Icon* currentIcon = mainIconList.GetAt(cursor.GetPositionIndex());
 
 	if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
 		u8g2.setFont(this->textFont);
@@ -66,10 +66,10 @@ void Menu::ProcessMenuEvent() {
 
 			break;
 		case  U8X8_MSG_GPIO_MENU_NEXT:
-			cursor.NextPosition(&superIconList);
+			cursor.NextPosition(&mainIconList);
 			break;
 		case  U8X8_MSG_GPIO_MENU_PREV:
-			cursor.PrevPosition(&superIconList);
+			cursor.PrevPosition(&mainIconList);
 			break;
 		case  U8X8_MSG_GPIO_MENU_SELECT:
 
@@ -88,8 +88,8 @@ void Menu::ProcessMenuEvent() {
 void Menu::Draw() {
 	uint8_t i = 0;
 	
-	while (i < superIconList.GetIconCount()) {
-		Icon* currentIcon = superIconList.GetAt(i);
+	while (i < mainIconList.GetIconCount()) {
+		Icon* currentIcon = mainIconList.GetAt(i);
 
 		if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
 			u8g2.setFont(currentIcon->GetFont());
@@ -102,5 +102,5 @@ void Menu::Draw() {
 	Menu::ProcessMenuEvent();
 
 	cursor.Render();
-	pageCursor.Render(&cursor);
+	mainPageCursor.Render(&cursor);
 }

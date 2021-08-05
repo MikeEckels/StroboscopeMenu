@@ -36,9 +36,6 @@
     <ClInclude Include="Indexer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SubIcon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PageCursor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -46,6 +43,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Cursor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SubIconList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,9 +62,6 @@
     <ClCompile Include="IconList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SubIcon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Indexer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -69,6 +69,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PageCursor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="List.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SubIconList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

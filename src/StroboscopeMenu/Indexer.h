@@ -1,7 +1,7 @@
 #ifndef INDEXER_H
 #define INDEXER_H
 
-#include <Math.h>
+#include <math.h>
 #include <stdint.h>
 
 #include "Vector3D.h"

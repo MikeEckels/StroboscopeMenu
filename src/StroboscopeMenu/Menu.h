@@ -13,7 +13,6 @@
 #endif
 
 #include "Icon.h"
-#include "List.h"
 #include "IconList.h"
 #include "Vector3D.h"
 #include "Cursor.h"
@@ -66,9 +65,9 @@ private:
 
 	/*############################################################################################################################*/
 
-	IconList superIconList = IconList(&u8g2, numIcons, numIconsPerPage, icons);
+	IconList mainIconList = IconList(&u8g2, numIcons, numIconsPerPage, icons);
 	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke, cursorStyle);
-	PageCursor pageCursor = PageCursor(&u8g2, &superIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
+	PageCursor mainPageCursor = PageCursor(&u8g2, &mainIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
 
 	void DrawText();
 	void DrawLayout();

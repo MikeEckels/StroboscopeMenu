@@ -60,7 +60,7 @@ void Cursor::PrevPosition(List* icons) {
 	}
 
 	//Shift page and cursor
-	if ((index != prevIndex) && !((prevIndex) % icons->GetIconsPerPage()) /* && (index != 0)*/) {
+	if ((index != prevIndex) && !((prevIndex) % icons->GetIconsPerPage())) {
 		DEBUG_PRINTLN("FORWARDS");
 		icons->ShiftIconsForwards(icons->GetIconsPerPage());
 		Cursor::SetPositionIndex(icons->GetAt(index));
