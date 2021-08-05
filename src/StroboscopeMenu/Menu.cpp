@@ -14,7 +14,7 @@ Menu:: Menu() {
 	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
 	u8g2.setFlipMode(1);
 
-	cursor.SetPositionIndex(list.GetAt(0));
+	cursor.SetPositionIndex(superIconList.GetAt(0));
 }
 
 Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned char leftBtn, const unsigned char rightBtn, const unsigned char selectBtn, const unsigned char cancelBtn, bool isInverted) 
@@ -23,7 +23,7 @@ Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned
 	u8g2.begin(this->selectBtn, this->rightBtn, this->leftBtn, this->upBtn, this->dwnBtn, this->cancelBtn, this->isInverted);
 	u8g2.setFlipMode(1);
 
-	cursor.SetPositionIndex(list.GetAt(0));
+	cursor.SetPositionIndex(superIconList.GetAt(0));
 }
 
 Menu::~Menu() = default;
@@ -37,7 +37,7 @@ uint8_t Menu::NextPage() {
 }
 
 void Menu::DrawText() {
-	Icon* currentIcon = list.GetAt(cursor.GetPositionIndex());
+	Icon* currentIcon = superIconList.GetAt(cursor.GetPositionIndex());
 
 	if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
 		u8g2.setFont(this->textFont);
@@ -54,24 +54,6 @@ void Menu::DrawLayout() {
 	}
 }
 
-//void Menu::CheckPageChange() {
-//	uint8_t currentCIndex = cursor.GetPositionIndex();
-//	uint8_t previousCIndex = cursor.GetPreviousPositionIndex();
-//	DEBUG_PRINT_ERR(currentCIndex);
-//	DEBUG_PRINT_ERR(previousCIndex);
-//
-//	if ((currentCIndex > previousCIndex) && !(currentCIndex % this->numIconsPerPage)  && (currentCIndex != 0)) {
-//		DEBUG_PRINTLN("RIGHT");
-//		list.ShiftIconsRight(this->numIconsPerPage);
-//		//cursor.SetPositionIndex(list.GetAt(currentCIndex));
-//	}
-//	else if ((currentCIndex < previousCIndex) && !(previousCIndex % this->numIconsPerPage)   && (currentCIndex != 0)) {
-//		DEBUG_PRINTLN("LEFT");
-//		list.ShiftIconsLeft(this->numIconsPerPage);
-//		//cursor.SetPositionIndex(list.GetAt(currentCIndex));
-//	}
-//}
-
 void Menu::ProcessMenuEvent() {
 	if (this->menuEvent == 0) {
 		this->menuEvent = u8g2.getMenuEvent();
@@ -84,10 +66,10 @@ void Menu::ProcessMenuEvent() {
 
 			break;
 		case  U8X8_MSG_GPIO_MENU_NEXT:
-			cursor.NextPosition(&list);
+			cursor.NextPosition(&superIconList);
 			break;
 		case  U8X8_MSG_GPIO_MENU_PREV:
-			cursor.PrevPosition(&list);
+			cursor.PrevPosition(&superIconList);
 			break;
 		case  U8X8_MSG_GPIO_MENU_SELECT:
 
@@ -106,8 +88,8 @@ void Menu::ProcessMenuEvent() {
 void Menu::Draw() {
 	uint8_t i = 0;
 	
-	while (i < list.GetIconCount()) {
-		Icon* currentIcon = list.GetAt(i);
+	while (i < superIconList.GetIconCount()) {
+		Icon* currentIcon = superIconList.GetAt(i);
 
 		if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
 			u8g2.setFont(currentIcon->GetFont());
@@ -118,7 +100,6 @@ void Menu::Draw() {
 		i++;
 	}
 	Menu::ProcessMenuEvent();
-	//Menu::CheckPageChange();
 
 	cursor.Render();
 	pageCursor.Render(&cursor);

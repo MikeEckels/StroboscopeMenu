@@ -6,7 +6,7 @@
 #include "Indexer.h"
 
 #include "Icon.h"
-#include "IconList.h"
+#include "List.h"
 #include "Vector3D.h"
 #include "DebugUtils.h"
 
@@ -25,8 +25,8 @@ public:
 
 	void SetPositionIndex(Icon* icon);
 
-	void NextPosition(IconList* icons);
-	void PrevPosition(IconList* icons);
+	void NextPosition(List* icons);
+	void PrevPosition(List* icons);
 	void Render();
 };
 

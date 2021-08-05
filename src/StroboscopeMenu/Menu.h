@@ -13,6 +13,7 @@
 #endif
 
 #include "Icon.h"
+#include "List.h"
 #include "IconList.h"
 #include "Vector3D.h"
 #include "Cursor.h"
@@ -50,8 +51,8 @@ private:
 	const uint8_t* textFont = u8g2_font_helvB10_tr;
 	
 	//Icon definitions: Display, Size, GlyphID, Name, Font
-	Icon strobe = Icon(iconSize, 67, "Strobe", u8g2_font_open_iconic_embedded_4x_t);
 	Icon settings = Icon(iconSize, 66, "Settings", u8g2_font_open_iconic_embedded_4x_t);
+	Icon strobe = Icon(iconSize, 67, "Strobe", u8g2_font_open_iconic_embedded_4x_t);
 	Icon flashLight = Icon(iconSize, 77, "Light", u8g2_font_open_iconic_embedded_4x_t);
 
 	Icon clock = Icon(iconSize, 65, "Clock", u8g2_font_open_iconic_embedded_4x_t);
@@ -61,17 +62,16 @@ private:
 	Icon wrench = Icon(iconSize, 72, "Wrench", u8g2_font_open_iconic_embedded_4x_t);
 	Icon blank = Icon(iconSize, 0, NULL, NULL);
 
-	Icon* icons[numIcons] = { &strobe, &settings, &flashLight, &clock, &pencil, &beat, &home, &wrench, &blank };
+	Icon* icons[numIcons] = { &settings, &strobe, &flashLight, &clock, &pencil, &beat, &home, &wrench, &blank };
 
 	/*############################################################################################################################*/
 
-	IconList list = IconList(&u8g2, numIcons, numIconsPerPage, icons);
+	IconList superIconList = IconList(&u8g2, numIcons, numIconsPerPage, icons);
 	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke, cursorStyle);
-	PageCursor pageCursor = PageCursor(&u8g2, &list, pageCursorSize, pageCursorStroke, pageCursorPadding);
+	PageCursor pageCursor = PageCursor(&u8g2, &superIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
 
 	void DrawText();
 	void DrawLayout();
-	void CheckPageChange();
 	void ProcessMenuEvent();
 
 public:

@@ -13,7 +13,7 @@ void Cursor::SetPositionIndex(Icon* icon) {
 	this->position.y = (icon->GetPosition().y - ((0.5) * (icon->GetSize().y)));
 }
 
-void Cursor::NextPosition(IconList* icons) {
+void Cursor::NextPosition(List* icons) {
 	uint8_t index = this->currentIndex;
 	uint8_t prevIndex = this->previousIndex;
 
@@ -31,8 +31,8 @@ void Cursor::NextPosition(IconList* icons) {
 
 	//Shift page and cursor
 	if ((index != prevIndex) && !(index % icons->GetIconsPerPage())) {
-		DEBUG_PRINTLN("RIGHT");
-		icons->ShiftIconsRight(icons->GetIconsPerPage());
+		DEBUG_PRINTLN("BACKWARDS");
+		icons->ShiftIconsBackwards(icons->GetIconsPerPage());
 		Cursor::SetPositionIndex(icons->GetAt(index));
 	}
 	else {//Just shift cursor
@@ -40,7 +40,7 @@ void Cursor::NextPosition(IconList* icons) {
 	}
 }
 
-void Cursor::PrevPosition(IconList* icons) {
+void Cursor::PrevPosition(List* icons) {
 	uint8_t index = this->currentIndex;
 	uint8_t prevIndex = this->previousIndex;
 
@@ -61,8 +61,8 @@ void Cursor::PrevPosition(IconList* icons) {
 
 	//Shift page and cursor
 	if ((index != prevIndex) && !((prevIndex) % icons->GetIconsPerPage()) /* && (index != 0)*/) {
-		DEBUG_PRINTLN("LEFT");
-		icons->ShiftIconsLeft(icons->GetIconsPerPage());
+		DEBUG_PRINTLN("FORWARDS");
+		icons->ShiftIconsForwards(icons->GetIconsPerPage());
 		Cursor::SetPositionIndex(icons->GetAt(index));
 	}
 	else {//Just shift cursor
