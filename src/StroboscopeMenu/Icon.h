@@ -2,7 +2,9 @@
 #define ICON_H
 
 #include <stdint.h>
+
 #include "Vector3D.h"
+#include "Action.h"
 
 class Icon {
 private:
@@ -15,9 +17,11 @@ private:
 	static int8_t currentIconId;
 	Vector3D position = { 0, 0 };
 
+	Action* action;
+
 public:
 	Icon();
-	Icon(Vector3D size, uint16_t glyphId, const char* name, const uint8_t* font);
+	Icon(Vector3D size, uint16_t glyphId, const char* name, const uint8_t* font, Action* action);
 	~Icon();
 
 	Vector3D GetSize();
@@ -26,6 +30,7 @@ public:
 	uint8_t GetIconId();
 	const char* GetName();
 	const uint8_t* GetFont();
+	Action* GetAction();
 
 	void SetPosition(Vector3D position);
 };

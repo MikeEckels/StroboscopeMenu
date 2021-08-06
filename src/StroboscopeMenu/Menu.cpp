@@ -60,16 +60,18 @@ void Menu::ProcessMenuEvent() {
 
 		switch (this->menuEvent) {
 		case U8X8_MSG_GPIO_MENU_UP:
-
+			Menu::HandleIconAction(mainIconList.GetAt(cursor.GetPositionIndex())->GetAction()->upAction);
 			break;
 		case  U8X8_MSG_GPIO_MENU_DOWN:
-
+			Menu::HandleIconAction(mainIconList.GetAt(cursor.GetPositionIndex())->GetAction()->downAction);
 			break;
 		case  U8X8_MSG_GPIO_MENU_NEXT:
-			cursor.NextPosition(&mainIconList);
+			Menu::HandleIconAction(mainIconList.GetAt(cursor.GetPositionIndex())->GetAction()->rightAction);
+			//cursor.NextPosition(&mainIconList);
 			break;
 		case  U8X8_MSG_GPIO_MENU_PREV:
-			cursor.PrevPosition(&mainIconList);
+			Menu::HandleIconAction(mainIconList.GetAt(cursor.GetPositionIndex())->GetAction()->leftAction);
+			//cursor.PrevPosition(&mainIconList);
 			break;
 		case  U8X8_MSG_GPIO_MENU_SELECT:
 
@@ -78,10 +80,39 @@ void Menu::ProcessMenuEvent() {
 
 			break;
 		default:
-			
+	
 			break;
 		}
 		this->menuEvent = 0;
+	}
+}
+
+void Menu::HandleIconAction(Actions action) {
+	switch (action) {
+	case Actions::NONE:
+			//Do Nothing
+			break;
+	case Actions::BACK:
+
+		break;
+	case Actions::CURSOR_NEXT:
+		cursor.NextPosition(&mainIconList);
+		break;
+	case Actions::CURSOR_PREVIOUS:
+		cursor.PrevPosition(&mainIconList);
+		break;
+	case Actions::SELECTION_LIST:
+		u8g2.userInterfaceSelectionList("Settings", 1, "Timeout\nContrast");
+		break;
+	case Actions::USER_INTERFACE_MESSAGE:
+
+		break;
+	case Actions::INPUT_VALUE:
+
+		break;
+	default:
+		DEBUG_PRINT_ERR("Action not supported");
+		break;
 	}
 }
 
