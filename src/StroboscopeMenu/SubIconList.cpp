@@ -9,11 +9,8 @@ SubIconList::~SubIconList() {}
 void SubIconList::SetIconSpacing() {
 	Vector3D position;
 
-	//uint16_t y = ((0.5) * (u8g2->getDisplayHeight() + icons[0]->GetSize().y));
-	//uint16_t z = (uint16_t)(floor(u8g2->getDisplayWidth() - (this->numIconsPerPage * icons[0]->GetSize().x)) / (this->numIconsPerPage + 1)); //Spacing between icons
-
-	uint16_t z = (uint16_t)(floor(u8g2->getDisplayHeight() - (this->numIconsPerPage * icons[0]->GetSize().y)) / (this->numIconsPerPage + 1)); //Spacing between icons
-	uint16_t x = ((0.5) * (u8g2->getDisplayHeight()));
+	uint16_t z = (uint16_t)(floor(u8g2->getDisplayHeight() + (this->numIconsPerPage * icons[0]->GetSize().y)) / (this->numIconsPerPage + 1)); //Spacing between icons
+	uint16_t x = (((0.5) * (u8g2->getDisplayWidth())) - ((0.5) * (icons[0]->GetSize().x)));
 
 	static uint16_t y = z;
 
