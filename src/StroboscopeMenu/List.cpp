@@ -2,7 +2,7 @@
 
 List::List() {}
 
-List::List(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, uint8_t size, uint8_t numIconsPerPage, Icon** icons) : u8g2(u8g2), size(size), numIconsPerPage(numIconsPerPage), icons(icons) {}
+List::List(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, uint8_t size, uint8_t numIconsPerPage, Element** icons) : u8g2(u8g2), size(size), numIconsPerPage(numIconsPerPage), icons(icons) {}
 
 List::~List() {}
 
@@ -34,7 +34,7 @@ uint8_t List::GetIconsPerPage() {
 	return this->numIconsPerPage;
 }
 
-Icon* List::GetAt(uint8_t index) {
+Element* List::GetAt(uint8_t index) {
 
 	if (index <= this->size - 1 && index >= 0) {
 		return this->icons[index];

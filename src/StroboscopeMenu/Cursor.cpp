@@ -6,9 +6,9 @@ Cursor::Cursor(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, Vector3D size, uint8_t 
 
 Cursor::~Cursor() {}
 
-void Cursor::SetPositionIndex(Icon* icon) {
+void Cursor::SetPositionIndex(Element* icon) {
 	this->previousIndex = this->currentIndex;
-	this->currentIndex = icon->GetIconId();
+	this->currentIndex = icon->GetId();
 	this->position.x = (((0.5) * icon->GetSize().x) + icon->GetPosition().x);
 	this->position.y = (icon->GetPosition().y - ((0.5) * (icon->GetSize().y)));
 }

@@ -5,7 +5,7 @@
 #include <U8g2lib.h>
 #include "Indexer.h"
 
-#include "Icon.h"
+#include "Element.h"
 #include "List.h"
 #include "Vector3D.h"
 #include "DebugUtils.h"
@@ -23,7 +23,7 @@ public:
 	Cursor(U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2, Vector3D size, uint8_t stroke, Style style);
 	~Cursor();
 
-	void SetPositionIndex(Icon* icon);
+	void SetPositionIndex(Element* icon);
 
 	void NextPosition(List* icons);
 	void PrevPosition(List* icons);
