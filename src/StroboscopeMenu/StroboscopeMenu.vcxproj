@@ -117,6 +117,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="SubIcon.h" />
     <ClInclude Include="SubIconList.h" />
+    <ClInclude Include="SubPageCursor.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="__vm\.StroboscopeMenu.vsarduino.h" />
   </ItemGroup>
@@ -131,6 +132,7 @@
     <ClCompile Include="PageCursor.cpp" />
     <ClCompile Include="SubIcon.cpp" />
     <ClCompile Include="SubIconList.cpp" />
+    <ClCompile Include="SubPageCursor.cpp" />
   </ItemGroup>
   <PropertyGroup>
     <DebuggerFlavor>VisualMicroDebugger</DebuggerFlavor>

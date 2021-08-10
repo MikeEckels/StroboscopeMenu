@@ -11,14 +11,14 @@
 #include "DebugUtils.h"
 
 class PageCursor : public Indexer {
-private:
+protected:
 	U8G2_SH1106_128X64_NONAME_2_HW_I2C* u8g2 = 0;
 	List* list = 0;
 	Indexer** cursors = 0;
 	uint8_t cursorCount = 0;
 	uint8_t padding = 0;
 
-	void SetSpacing();
+	virtual void SetSpacing();
 	void ClearList();
 
 public:

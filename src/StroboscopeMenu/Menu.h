@@ -20,6 +20,7 @@
 #include "Vector3D.h"
 #include "Cursor.h"
 #include "PageCursor.h"
+#include "SubPageCursor.h"
 #include "DebugUtils.h"
 
 class Menu {
@@ -62,13 +63,13 @@ private:
 	ActionData settingsActionData = { {NULL, NULL, NULL, NULL, NULL, NULL, NULL}, {NULL, NULL, NULL, NULL}, {"Settings", "Screen Timeout\nContrast", 1} };
 	ActionData strobeActionData = { {NULL, NULL, NULL, NULL, NULL, NULL, NULL}, {NULL, NULL, NULL, NULL}, {NULL, NULL, NULL} };
 	ActionData flashLightActionData = { {NULL, NULL, NULL, NULL, NULL, NULL, NULL}, {NULL, NULL, NULL, NULL}, {"Light State", "ON\nOFF", 1} };
-	ActionData blankActionData = { {"Select Voltage", "DAC= ", " V",  &pageCursorPadding, 0, 5, 1}, {NULL, NULL, NULL, NULL}, {NULL, NULL, NULL}};
+	ActionData blankActionData = { {"Select Voltage", "Output= ", " V",  &pageCursorPadding, 0, 5, 1}, {NULL, NULL, NULL, NULL}, {NULL, NULL, NULL}};
 
 	//Icon Action definitions: upBtnAction, dwnBtnAction, leftBtnAction, rightBtnAction
 	Action settingsAction = Action(Actions::NONE, Actions::SELECTION_LIST, Actions::CURSOR_PREVIOUS, Actions::CURSOR_NEXT, settingsActionData);
 	Action strobeAction = Action(Actions::NONE, Actions::JUMP_INTO_SUB_ICONS, Actions::CURSOR_PREVIOUS, Actions::CURSOR_NEXT, strobeActionData);
-	Action flashLightAction = Action(Actions::NONE, Actions::INPUT_VALUE, Actions::CURSOR_PREVIOUS, Actions::CURSOR_NEXT, blankActionData);
-	Action blankAction = Action(Actions::JUMP_OUTOF_SUB_ICONS, Actions::NONE, Actions::CURSOR_PREVIOUS, Actions::CURSOR_NEXT, blankActionData);
+	Action flashLightAction = Action(Actions::NONE, Actions::SELECTION_LIST, Actions::CURSOR_PREVIOUS, Actions::CURSOR_NEXT, flashLightActionData);
+	Action blankAction = Action(Actions::JUMP_OUTOF_SUB_ICONS, Actions::INPUT_VALUE, Actions::CURSOR_PREVIOUS, Actions::CURSOR_NEXT, blankActionData);
 	
 	//Icon definitions: Display, Size, GlyphID, Name, Font
 	Icon settings = Icon(iconSize, 66, "Settings", u8g2_font_open_iconic_embedded_4x_t, &settingsAction);
@@ -83,8 +84,8 @@ private:
 	Icon blank = Icon(iconSize, 0, NULL, NULL, &blankAction);
 
 	//SubIcon definitions: Display, Size, GlyphId, Name, Font
-	SubIcon subExternalTrigger = SubIcon(iconSize, 64, "External Trigger", u8g2_font_open_iconic_gui_4x_t, &blankAction);
-	SubIcon subFreqControl = SubIcon(iconSize, 70, "Frequency Control", u8g2_font_open_iconic_embedded_4x_t, &blankAction);
+	SubIcon subExternalTrigger = SubIcon(iconSize, 64, "EXT Trigger", u8g2_font_open_iconic_gui_4x_t, &blankAction);
+	SubIcon subFreqControl = SubIcon(iconSize, 70, "Freq Control", u8g2_font_open_iconic_embedded_4x_t, &blankAction);
 	SubIcon subRPMControl = SubIcon(iconSize, 79, "RPM Control", u8g2_font_open_iconic_embedded_4x_t, &blankAction);
 
 	//Icon and SubIcon arrays
@@ -98,17 +99,19 @@ private:
 
 	//Cursor definitions: Display, Size, Stroke, Sytle
 	Cursor cursor = Cursor(&u8g2, iconSize, cursorStroke, cursorStyle);
-	PageCursor mainPageCursor = PageCursor(&u8g2, &mainIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
-	PageCursor strobeSubPageCursor = PageCursor(&u8g2, &strobeSubIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
+	Cursor subCursor = Cursor(&u8g2, iconSize, cursorStroke, cursorStyle);
 
-	PageCursor* subPageCursors[numSubPageCursors] = {nullptr, &strobeSubPageCursor};
+	PageCursor mainPageCursor = PageCursor(&u8g2, &mainIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
+	SubPageCursor strobeSubPageCursor = SubPageCursor(&u8g2, &strobeSubIconList, pageCursorSize, pageCursorStroke, pageCursorPadding);
+
+	SubPageCursor* subPageCursors[numSubPageCursors] = {nullptr, &strobeSubPageCursor};
 
 	/*############################################################################################################################*/
 
-	void DrawText();
+	void DrawText(List* activeList, Cursor* activeCursor);
 	void DrawLayout();
-	void ProcessMenuEvent(List* list);
-	void HandleIconAction(Actions action, ActionData actionData, bool iconType);
+	void ProcessMenuEvent(List* list, Cursor* activeCursor);
+	void HandleIconAction(List* activeList, Cursor* activeCursor, Actions action, ActionData actionData);
 
 public:
 	Menu();

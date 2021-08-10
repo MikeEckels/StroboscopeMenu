@@ -1,6 +1,7 @@
 #include "Menu.h"
 
-int8_t Element::currentId = -1;
+int8_t Icon::currentId = -1;
+int8_t SubIcon::currentId = -1;
 
 Menu:: Menu() {
 	this->upBtn = 3;
@@ -15,6 +16,7 @@ Menu:: Menu() {
 	u8g2.setFlipMode(1);
 
 	cursor.SetPositionIndex(mainIconList.GetAt(0));
+	subCursor.SetPositionIndex(subIconLists[1]->GetAt(0));
 }
 
 Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned char leftBtn, const unsigned char rightBtn, const unsigned char selectBtn, const unsigned char cancelBtn, bool isInverted) 
@@ -24,6 +26,7 @@ Menu::Menu(const unsigned char upBtn, const unsigned char dwnBtn, const unsigned
 	u8g2.setFlipMode(1);
 
 	cursor.SetPositionIndex(mainIconList.GetAt(0));
+	subCursor.SetPositionIndex(subIconLists[1]->GetAt(0));
 }
 
 Menu::~Menu() = default;
@@ -36,8 +39,8 @@ uint8_t Menu::NextPage() {
 	return u8g2.nextPage();
 }
 
-void Menu::DrawText() {
-	Element* currentIcon = mainIconList.GetAt(cursor.GetPositionIndex());
+void Menu::DrawText(List* activeList, Cursor* activeCursor) {
+	Element* currentIcon =activeList->GetAt(activeCursor->GetPositionIndex());
 
 	if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
 		u8g2.setFont(this->textFont);
@@ -54,37 +57,40 @@ void Menu::DrawLayout() {
 	}
 }
 
-void Menu::ProcessMenuEvent(List* list) {
+void Menu::ProcessMenuEvent(List* list, Cursor* activeCursor) {
 	if (this->menuEvent == 0) {
 		this->menuEvent = u8g2.getMenuEvent();
 		Action* iconAction = list->GetAt(cursor.GetPositionIndex())->GetAction();
-		bool iconType = list->GetAt(cursor.GetPositionIndex())->GetType();
 
 		switch (this->menuEvent) {
 		case U8X8_MSG_GPIO_MENU_UP:
-			Menu::HandleIconAction(iconAction->upAction, iconAction->actionData, iconType);
+			Menu::HandleIconAction(list, activeCursor, iconAction->upAction, iconAction->actionData);
 			DEBUG_PRINTLN("UP");
 			break;
+
 		case  U8X8_MSG_GPIO_MENU_DOWN:
-			Menu::HandleIconAction(iconAction->downAction, iconAction->actionData, iconType);
+			Menu::HandleIconAction(list, activeCursor, iconAction->downAction, iconAction->actionData);
 			DEBUG_PRINTLN("DOWN");
 			break;
+
 		case  U8X8_MSG_GPIO_MENU_NEXT:
-			Menu::HandleIconAction(iconAction->rightAction, iconAction->actionData, iconType);
+			Menu::HandleIconAction(list, activeCursor, iconAction->rightAction, iconAction->actionData);
 			DEBUG_PRINTLN("NEXT");
-			//cursor.NextPosition(&mainIconList);
 			break;
+
 		case  U8X8_MSG_GPIO_MENU_PREV:
-			Menu::HandleIconAction(iconAction->leftAction, iconAction->actionData, iconType);
+			Menu::HandleIconAction(list, activeCursor, iconAction->leftAction, iconAction->actionData);
 			DEBUG_PRINTLN("PREV");
-			//cursor.PrevPosition(&mainIconList);
 			break;
+
 		case  U8X8_MSG_GPIO_MENU_SELECT:
 			DEBUG_PRINTLN("SELECT");
 			break;
+
 		case  U8X8_MSG_GPIO_MENU_HOME:
 			DEBUG_PRINTLN("HOME");
 			break;
+
 		default:
 
 			break;
@@ -93,41 +99,41 @@ void Menu::ProcessMenuEvent(List* list) {
 	}
 }
 
-void Menu::HandleIconAction(Actions action, ActionData actionData, bool iconType) {
-
+void Menu::HandleIconAction(List* activeList, Cursor* activeCursor, Actions action, ActionData actionData) {
 	switch (action) {
 	case Actions::NONE:
-			//Do Nothing
+		//Do Nothing
 		DEBUG_PRINT_NOTICE("NONE");
 		break;
+
 	case Actions::JUMP_OUTOF_SUB_ICONS:
 		drawSubIcons = false;
+		u8g2.setMenuNextPin(Menu::rightBtn);
+		u8g2.setMenuPrevPin(Menu::leftBtn);
+		u8g2.setMenuUpPin(Menu::upBtn);
+		u8g2.setMenuDownPin(Menu::dwnBtn);
 		DEBUG_PRINT_NOTICE("JUMPOUT");
 		break;
+
 	case Actions::JUMP_INTO_SUB_ICONS:
 		drawSubIcons = true;
+		u8g2.setMenuNextPin(Menu::dwnBtn);
+		u8g2.setMenuPrevPin(Menu::upBtn);
+		u8g2.setMenuUpPin(Menu::leftBtn);
+		u8g2.setMenuDownPin(Menu::rightBtn);
 		DEBUG_PRINT_NOTICE("JUMPIN");
 		break;
+
 	case Actions::CURSOR_NEXT:
-		if (iconType) {
-			cursor.NextPosition(subIconLists[cursor.GetPositionIndex()]);
-			DEBUG_PRINT_NOTICE("NEXTSUB");
-		}
-		else {
-			cursor.NextPosition(&mainIconList);
-			DEBUG_PRINT_NOTICE("NEXTMAIN");
-		}
+		activeCursor->NextPosition(activeList);
+		DEBUG_PRINT_NOTICE("NEXTSUB/MAIN");
 		break;
+
 	case Actions::CURSOR_PREVIOUS:
-		if (iconType) {
-			cursor.PrevPosition(subIconLists[cursor.GetPositionIndex()]);
-			DEBUG_PRINT_NOTICE("PREVSUB");
-		}
-		else {
-			cursor.PrevPosition(&mainIconList);
-			DEBUG_PRINT_NOTICE("PREVMAIN");
-		}
+		activeCursor->PrevPosition(activeList);
+		DEBUG_PRINT_NOTICE("PREVSUB/MAIN");
 		break;
+
 	case Actions::SELECTION_LIST:
 		DEBUG_PRINT_NOTICE("LIST");
 		u8g2.setMenuNextPin(U8X8_PIN_NONE);
@@ -140,6 +146,7 @@ void Menu::HandleIconAction(Actions action, ActionData actionData, bool iconType
 		u8g2.setMenuPrevPin(Menu::leftBtn);
 		u8g2.setMenuNextPin(Menu::rightBtn);
 		break;
+
 	case Actions::USER_INTERFACE_MESSAGE:
 		DEBUG_PRINT_NOTICE("MESSAGE");
 		u8g2.setMenuUpPin(U8X8_PIN_NONE);
@@ -152,6 +159,7 @@ void Menu::HandleIconAction(Actions action, ActionData actionData, bool iconType
 		u8g2.setMenuUpPin(Menu::upBtn);
 		u8g2.setMenuDownPin(Menu::dwnBtn);
 		break;
+
 	case Actions::INPUT_VALUE:
 		DEBUG_PRINT_NOTICE("INPUT");
 		u8g2.setMenuNextPin(U8X8_PIN_NONE);
@@ -164,6 +172,7 @@ void Menu::HandleIconAction(Actions action, ActionData actionData, bool iconType
 		u8g2.setMenuPrevPin(Menu::leftBtn);
 		u8g2.setMenuNextPin(Menu::rightBtn);
 		break;
+
 	default:
 		DEBUG_PRINT_ERR("Action not supported");
 		break;
@@ -172,31 +181,34 @@ void Menu::HandleIconAction(Actions action, ActionData actionData, bool iconType
 
 void Menu::Draw() {
 	uint8_t i = 0;
-	List* list;
-	PageCursor* pageCursor;
+	List* activeList;
+	Cursor* activeCursor;
+	PageCursor* activePageCursor;
 
 	if (!drawSubIcons) {
-		list = &mainIconList;
-		pageCursor = &mainPageCursor;
+		activeList = &mainIconList;
+		activeCursor = &cursor;
+		activePageCursor = &mainPageCursor;
 	}
 	else {
-		list = subIconLists[cursor.GetPositionIndex()];
-		pageCursor = subPageCursors[cursor.GetPositionIndex()];
+		activeList = subIconLists[1];
+		activeCursor = &subCursor;
+		activePageCursor = subPageCursors[1];
 	}
 
-	while (i < list->GetIconCount()) {
-		Element* currentIcon = list->GetAt(i);
+	while (i < activeList->GetIconCount()) {
+		Element* currentIcon = activeList->GetAt(i);
 
 		if (currentIcon && currentIcon->GetName() && currentIcon->GetFont()) {
 			u8g2.setFont(currentIcon->GetFont());
 			u8g2.drawGlyph(currentIcon->GetPosition().x, currentIcon->GetPosition().y, currentIcon->GetGlyphId());
-			Menu::DrawText();
+			Menu::DrawText(activeList, activeCursor);
 			//Menu::DrawLayout();
 		}
 		i++;
 	}
-	Menu::ProcessMenuEvent(list);
+	Menu::ProcessMenuEvent(activeList, activeCursor);
 
-	cursor.Render();
-	pageCursor->Render(&cursor);
+	activeCursor->Render();
+	activePageCursor->Render(activeCursor);
 }
